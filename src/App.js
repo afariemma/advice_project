@@ -1,7 +1,35 @@
+import { useState,useEffect } from 'react';
 import './App.css';
-i
+import axios from 'axios';
+
 function App() {
-  const [state, setState] = useState("");
+  const [advice, setAdvice] = useState("");
+
+  const fetchAdvice = () => {
+     axios.get("https://api.adviceslip.com/advice")
+       .then((response) => {
+         const { advice } = response.data.slip;
+         setAdvice(advice)
+       }).catch((error) => {
+       console.log(error);
+     })
+  }
+
+  useEffect(() => {
+    fetchAdvice()
+  }, [])
+  
   return (
-    <div className="App">
-      <h1>Advice App</h1>
+   
+      <div className='app'>
+        <div className='card'>
+           <h2 className='heading'>{advice}</h2>
+          <button className='button' onClick={fetchAdvice}>
+            <span>GIVE ME ADVICE!</span>
+          </button>
+        </div>
+      </div>
+  );
+}
+
+export default App;
